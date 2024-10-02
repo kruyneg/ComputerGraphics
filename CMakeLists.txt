@@ -6,24 +6,16 @@ set(CMAKE_CXX_STANDARD 20)
 
 include(FetchContent)
 
-# FetchContent_Declare(
-#     glfw
-#     GIT_REPOSITORY https://github.com/glfw/glfw.git
-#     GIT_TAG        3.4
-# )
-
-# FetchContent_MakeAvailable(glfw)
-
 FetchContent_Declare(
     sfml
-    GIT_REPOSITORY https://github.com/sfml/sfml.git
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG        2.6.1
+    GIT_SHALLOW    TRUE
 )
 
-FetchContent_MakeAvailable(sfml)
+set(FETCHCONTENT_QUIET OFF)
 
-# костыль
-include_directories(build/_deps/sfml-src/include/)
+FetchContent_MakeAvailable(sfml)
 
 find_package(OpenGL REQUIRED)
 

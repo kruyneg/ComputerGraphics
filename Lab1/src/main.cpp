@@ -44,29 +44,28 @@ void processEvents(sf::Window& win) {
 }
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode() /* sf::VideoMode{1600, 1000} */, "Running Hexagon", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Running Hexagon", sf::Style::Fullscreen);
 
 
     sf::CircleShape hexagon(50, 6);
     hexagon.setOutlineThickness(5);
     hexagon.setOutlineColor(sf::Color::White);
     hexagon.setFillColor(sf::Color::Red);
-    // hexagon.setPosition(static_cast<sf::Vector2f>(window.getSize()) / 2.0f);
 
     sf::Vector2f startPosition{static_cast<sf::Vector2f>(window.getSize()) / 2.0f};
     sf::Vector2f endPosition = randPoint(window);
     
-    float t = 0; // коэффициент интерполяции.
+    float t; // коэффициент интерполяции.
     bool direction = true; // направление движения (в начало или в новую точку)
 
     sf::Transform matrix; // матрица трансформаций
 
     sf::Clock clock;
-    float moveTime = 3; // время за которое фигура переместится между точками
+    float moveTime = 3; // время за которое фигура переместится между точками в секундах
     while (window.isOpen()) {
 
         std::cout << "\r                \r" <<  endPosition.x << ' ' << endPosition.y << std::flush;
-        float t = 0;
+        t = 0;
         while (window.isOpen() && t < 1) {
             processEvents(window);
 
@@ -89,8 +88,7 @@ int main() {
         }
         t = 0;
         std::swap(startPosition, endPosition);
-        if (direction) {
-        } else {
+        if (!direction) {
             endPosition = randPoint(window);
         }
         direction = !direction;
