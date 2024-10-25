@@ -13,10 +13,21 @@ FetchContent_Declare(
     GIT_SHALLOW    TRUE
 )
 
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm
+    GIT_TAG        1.0.1
+    GIT_SHALLOW    TRUE
+)
+
 set(FETCHCONTENT_QUIET OFF)
 
 FetchContent_MakeAvailable(sfml)
+FetchContent_MakeAvailable(glm)
+
+include_directories(${glm_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(Lab1)
+add_subdirectory(Lab2)
