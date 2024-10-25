@@ -9,6 +9,7 @@ class Shape {
     virtual void setPosition(const glm::vec3&) = 0;
     virtual glm::vec3 getPosition() const = 0;
     virtual void setColor(const sf::Color&) = 0;
+    virtual void transform(const glm::mat4& mat) { __points.transform(mat); }
     virtual void draw(sf::RenderTarget&, const glm::mat4&) const = 0;
 
    protected:

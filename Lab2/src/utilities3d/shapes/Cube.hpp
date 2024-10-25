@@ -20,6 +20,8 @@ class Cube final : public Shape {
     */
     void setColor(const std::vector<sf::Color>& colors);
 
+    void transform(const glm::mat4&) override;
+
     void draw(sf::RenderTarget& window,
               const glm::mat4& transform = glm::mat4(1)) const override;
 

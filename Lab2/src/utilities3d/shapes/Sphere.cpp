@@ -29,42 +29,48 @@ Sphere::Sphere(const glm::float32 radius, const int steps, const int points) {
     __points.append(Vertex3(sphere_cells[0], sf::Color::Green));
     __points.append(Vertex3(sphere_cells[1], sf::Color::Blue));
 
-
     for (size_t h = 1; h < steps; ++h) {
         for (size_t i = 1; i < points; ++i) {
             __points.append(
                 Vertex3(sphere_cells[(h - 1) * points + i], sf::Color::Green));
-            __points.append(Vertex3(sphere_cells[h * points + i], sf::Color::Red));
             __points.append(
-                Vertex3(sphere_cells[(h - 1) * points + i + 1], sf::Color::Blue));
+                Vertex3(sphere_cells[h * points + i], sf::Color::Red));
+            __points.append(Vertex3(sphere_cells[(h - 1) * points + i + 1],
+                                    sf::Color::Blue));
 
             __points.append(
                 Vertex3(sphere_cells[h * points + i], sf::Color::Red));
             __points.append(
                 Vertex3(sphere_cells[h * points + i + 1], sf::Color::Green));
-            __points.append(
-                Vertex3(sphere_cells[(h - 1) * points + i + 1], sf::Color::Blue));
+            __points.append(Vertex3(sphere_cells[(h - 1) * points + i + 1],
+                                    sf::Color::Blue));
         }
+        __points.append(Vertex3(sphere_cells[(h - 1) * points + points],
+                                sf::Color::Yellow));
         __points.append(
-            Vertex3(sphere_cells[(h - 1) * points + points], sf::Color::Yellow));
-        __points.append(Vertex3(sphere_cells[h * points + points], sf::Color::Magenta));
+            Vertex3(sphere_cells[h * points + points], sf::Color::Magenta));
         __points.append(
             Vertex3(sphere_cells[(h - 1) * points + 1], sf::Color::Cyan));
 
-        __points.append(Vertex3(sphere_cells[h * points + points], sf::Color::Magenta));
-        __points.append(Vertex3(sphere_cells[h * points + 1], sf::Color::Yellow));
+        __points.append(
+            Vertex3(sphere_cells[h * points + points], sf::Color::Magenta));
+        __points.append(
+            Vertex3(sphere_cells[h * points + 1], sf::Color::Yellow));
         __points.append(
             Vertex3(sphere_cells[(h - 1) * points + 1], sf::Color::Cyan));
     }
 
-    for (size_t i = sphere_cells.size() - 2; i > sphere_cells.size() - points - 1; --i) {
+    for (size_t i = sphere_cells.size() - 2;
+         i > sphere_cells.size() - points - 1; --i) {
         __points.append(Vertex3(sphere_cells[i], sf::Color::Red));
         __points.append(Vertex3(sphere_cells.back(), sf::Color::Green));
         __points.append(Vertex3(sphere_cells[i - 1], sf::Color::Blue));
     }
-    __points.append(Vertex3(sphere_cells[sphere_cells.size() - points - 1], sf::Color::Magenta));
+    __points.append(Vertex3(sphere_cells[sphere_cells.size() - points - 1],
+                            sf::Color::Magenta));
     __points.append(Vertex3(sphere_cells.back(), sf::Color::Yellow));
-    __points.append(Vertex3(sphere_cells[sphere_cells.size() - 2], sf::Color::Cyan));
+    __points.append(
+        Vertex3(sphere_cells[sphere_cells.size() - 2], sf::Color::Cyan));
 
     __points.setPrimitiveType(draw_type);
 }
@@ -82,6 +88,14 @@ void Sphere::setColor(const sf::Color& color) {
     for (size_t i = 0; i < __points.getVertexCount(); ++i) {
         __points[i].color = color;
     }
+}
+
+void Sphere::transform(const glm::mat4& matrix) {
+    auto pos = getPosition();
+    this->setPosition({0, 0, 0});
+    __points.transform(matrix);
+    this->setPosition(glm::translate(glm::mat4(1), glm::vec3(matrix[3])) *
+                      glm::vec4(pos, 1));
 }
 
 void Sphere::draw(sf::RenderTarget& target, const glm::mat4& transform) const {

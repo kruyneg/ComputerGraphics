@@ -11,6 +11,8 @@ class Sphere final : public Shape {
     glm::vec3 getPosition() const override;
     void setColor(const sf::Color&) override;
 
+    void transform(const glm::mat4& matrix) override;
+
     void draw(sf::RenderTarget&,
               const glm::mat4& = glm::mat4(1)) const override;
 
