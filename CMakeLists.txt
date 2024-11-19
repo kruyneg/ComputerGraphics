@@ -28,6 +28,8 @@ FetchContent_MakeAvailable(glm)
 include_directories(${glm_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
 
 add_subdirectory(Lab1)
 add_subdirectory(Lab2)
+add_subdirectory(Lab4)
