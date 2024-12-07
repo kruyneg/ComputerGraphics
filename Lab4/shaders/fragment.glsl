@@ -35,9 +35,13 @@ void main()
     vec3 viewDir = normalize(lightPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0); // 32 - блеск
+    if (dot(lightDir, normal) < 0) {
+        spec = 0;
+    }
 
     vec3 diffuse = diff * texture(ourTexture, texCoord).rgb;
     vec3 specular = spec * vec3(0.5);
+    // vec3 specular = vec3(0);
 
     // Итоговый цвет
     vec3 result = diffuse + specular;

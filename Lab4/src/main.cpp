@@ -14,15 +14,15 @@ const std::string shader_dir =
     "/home/kruyneg/Programming/ComputerGraphics/Lab4/shaders/";
 
 const std::string tex_path =
-    "/home/kruyneg/Изображения/50-free-textures-4+normalmaps/192.JPG";
+    "/home/kruyneg/Изображения/50-free-textures-4+normalmaps/172.JPG";
 const std::string nm_path =
-    "/home/kruyneg/Изображения/50-free-textures-4+normalmaps/192_norm.JPG";
+    "/home/kruyneg/Изображения/50-free-textures-4+normalmaps/172_norm.JPG";
 
 auto vertex_shader_path = shader_dir + "vertex.glsl";
 auto fragment_shader_path = shader_dir + "fragment.glsl";
 
 int main() {
-    Window3d window(sf::VideoMode::getDesktopMode(), "Simple Triangle");
+    Window3d window(sf::VideoMode::getDesktopMode(), "Simple Сube");
     window.setVerticalSyncEnabled(true);
     sf::Mouse::setPosition(static_cast<sf::Vector2i>(window.getSize()) / 2,
                            window);
