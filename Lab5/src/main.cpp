@@ -9,10 +9,10 @@ constexpr float Scale = 5;
 
 int main() {
     const float Radius = Scale / 3;
-    Camera cam(1080, 1080.f / 9 * 16, {0, 0, 0.0001}, {0, -Scale / 2.0f + Radius, Scale});
+    Camera cam(400, 400.f / 9 * 16, {0, 0, 0.0001}, {0, -Scale / 2.0f + Radius, Scale});
 
     sf::Image img, tex_floor, tex_wall, tex_roof;
-    img.create(1080.f / 9 * 16, 1080);
+    img.create(400.f / 9 * 16, 400);
     tex_roof.create(2 * Scale, 2 * Scale, {200, 0, 0});
     tex_floor.loadFromFile("/home/kruyneg/Изображения/road_asphalt_seamless_texture_6636.jpg");
     tex_wall.loadFromFile("/home/kruyneg/Изображения/50-free-textures-4+normalmaps/154.JPG");
@@ -25,7 +25,7 @@ int main() {
     // Plane wall4({0, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {2.0f * Scale, Scale}, 1, tex_wall);
     Plane wall4({Scale, 0, 0}, {0, 0, -1}, {0, 1, 0}, {2.0f * Scale, Scale}, 0.1, tex_wall);
 
-    Sphere sphere({0, -Scale / 2.0f + Radius, Scale}, {0.9, 0.9, 0.9}, Radius, 0.8f, false);
+    Sphere sphere({0, -Scale / 2.0f + Radius, Scale}, {0.9, 0.9, 0.9}, Radius, 1.0f, false);
     std::vector<Shape*> shapes_ptr;
     // shapes_ptr.push_back(&roof);
     shapes_ptr.push_back(&floor);
