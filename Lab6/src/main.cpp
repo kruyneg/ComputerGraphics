@@ -20,7 +20,7 @@ int getRandomInt(int min, int max) {
     return dist(gen);
 }
 
-constexpr int WIN_SCORE = 5;
+constexpr int WIN_SCORE = 10;
 
 int main() {
     cge::Scene scene("Snowman Building");
@@ -53,14 +53,16 @@ int main() {
         "/home/kruyneg/Загрузки/uploads_files_4174453_textures/"
         "uploads_files_4174453_Snowman.obj");
     // cge::Camera cam(glm::vec3(-2, 1, -2), glm::vec3(0));
-    cge::TPCamera cam(10.0f);
+    cge::CameraSettings custom = cge::CameraSettings::Default;
+    // custom.ortho = true;
+    cge::TPCamera cam(10.0f, custom);
     // cge::Model character("/home/kruyneg/Загрузки/"
     //                 "97254d5affed41beacf00447e40beac2_obj/model.obj");
     // character.scale(glm::vec3(0.01));
 
     cge::Model snowflake(
         "/home/kruyneg/Загрузки/uploads_files_4202298_Snowflake/Snowflake.obj");
-    snowflake.translate({0, 10, 0});
+    snowflake.translate({1, 4, 0});
 
     cam.bind(&character);
 
@@ -68,16 +70,25 @@ int main() {
 
     uint score = 0;
     cge::FrameEvent falling([&snowflake]() {
+        // Получаем текущую позицию снежинки
         auto pos = snowflake.getPosition();
-        snowflake.translate(-snowflake.getPosition());
-        // snowflake.rotateY(glm::radians(5.0f));
-        snowflake.translate(pos + glm::vec3{0, -0.05, 0});
+
+        // Сначала смещаем снежинку вниз в мировой системе координат
+
+        // Затем выполняем вращение вокруг её собственной оси
+        // snowflake.translate(-pos); // Перемещаем снежинку к началу координат
+        // snowflake.rotateY(glm::radians(5.0f)); // Вращаем вокруг оси Y
+        // snowflake.translate(pos); // Возвращаем снежинку обратно на место
+        snowflake.translate(glm::vec3{0, -0.05, 0});
     });
     cge::IntersectEvent fall_to_floor(
-        &global_floor, &snowflake, [&global_floor, &snowflake]() {
-            auto oldpos = snowflake.getPosition();
-            snowflake.translate(-oldpos);
-            snowflake.translate({getRandomInt(-4, 4), 10, getRandomInt(-4, 4)});
+        &global_floor, &snowflake, [&score, &global_floor, &snowflake]() {
+            if (score < WIN_SCORE) {
+                auto oldpos = snowflake.getPosition();
+                snowflake.translate(-oldpos);
+                snowflake.translate(
+                    {getRandomInt(-4, 4), 10, getRandomInt(-4, 4)});
+            }
         });
     cge::IntersectEvent character_catch(
         &character, &snowflake, [&snowflake, &character, &score]() {
@@ -175,12 +186,14 @@ int main() {
                        }};
 
     cge::DirectLight sky_light({0, -0.5, -0.5}, glm::uvec3{250, 250, 255} / 2u);
+    cge::PointLight l({0, 3, 0}, glm::uvec3(255));
 
     scene.add(floor)
         .add(global_floor)
         .add(character)
         .add(sky_light)
         .add(sky_light)
+        // .add(l)
         .add(wall1)
         .add(wall2)
         .add(wall3)

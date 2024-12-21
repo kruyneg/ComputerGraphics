@@ -3,8 +3,8 @@
 
 namespace cge {
 
-void Scene::handleEvents(Scene* s) {
-    while(s->window.isOpen()) {
+void Scene::handleEvents(Scene *s) {
+    while (s->window.isOpen()) {
         glm::vec2 mouse_offset(0);
         glm::f32 mouse_scroll = 0;
 
@@ -33,13 +33,13 @@ void Scene::handleEvents(Scene* s) {
                 static_cast<sf::Vector2i>(s->window.getSize()) / 2, s->window);
         }
 
-        for (auto& event : s->event_container) {
+        for (auto &event : s->event_container) {
             if (event->condition()) {
                 event->action();
             }
         }
         if (mouse_offset != glm::vec2(0) || mouse_scroll != 0) {
-            for (auto& event : s->mouse_event_container) {
+            for (auto &event : s->mouse_event_container) {
                 event->action(mouse_offset.x, mouse_offset.y, mouse_scroll);
             }
         }
@@ -54,7 +54,16 @@ void Scene::run() {
     if (!window.setActive(true)) {
         throw std::runtime_error("Failed to activate OpenGL context.");
     }
-    // std::thread t(handleEvents, this);
+
+    sf::Font font;
+    font.loadFromFile("/home/kruyneg/Загрузки/shrift.ttf");
+    sf::Text fps_text;
+    fps_text.setFont(font);
+    fps_text.setCharacterSize(24);
+    fps_text.setFillColor(sf::Color::Red);
+    int fps;
+    sf::Clock fps_clock;
+
     while (window.isOpen()) {
         glm::vec2 mouse_offset(0);
         glm::f32 mouse_scroll = 0;
@@ -84,13 +93,13 @@ void Scene::run() {
                 static_cast<sf::Vector2i>(window.getSize()) / 2, window);
         }
 
-        for (auto& event : event_container) {
+        for (auto &event : event_container) {
             if (event->condition()) {
                 event->action();
             }
         }
         if (mouse_offset != glm::vec2(0) || mouse_scroll != 0) {
-            for (auto& event : mouse_event_container) {
+            for (auto &event : mouse_event_container) {
                 event->action(mouse_offset.x, mouse_offset.y, mouse_scroll);
             }
         }
@@ -130,6 +139,13 @@ void Scene::run() {
         for (auto object_ptr : model_container) {
             object_ptr->draw(obj_shader);
         }
+
+        fps = 1.0f / fps_clock.getElapsedTime().asSeconds();
+        fps_clock.restart();
+        fps_text.setString(std::to_string(fps));
+        window.pushGLStates(); // Сохраняем состояние OpenGL
+        window.draw(fps_text);
+        window.popGLStates(); // Восстанавливаем состояние OpenGL
 
         window.display();
     }

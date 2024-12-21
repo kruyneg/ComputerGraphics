@@ -3,6 +3,7 @@
 #include "../shader/Shader.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 namespace cge {
 
@@ -17,6 +18,10 @@ class ObjectBase {
         __placement = glm::translate(__placement, vec);
     }
     void rotate(glm::f32 angle, const glm::vec3 &vec) {
+        glm::mat4 E(1);
+        if (__placement != glm::mat4(1)) {
+            std::cout << "fuck\n";
+        }
         __placement = glm::rotate(__placement, angle, vec);
     }
     void rotateX(glm::f32 angle) { rotate(angle, {1, 0, 0}); }

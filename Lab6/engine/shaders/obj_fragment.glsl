@@ -70,7 +70,7 @@ void main() {
         }
         for (int i = 0; i < pl_size; i++) {
             sumColors +=
-                phongLighting(normal, vec3(light_points[i] - FragPos),
+                phongLighting(normal, -vec3(light_points[i] - FragPos),
                               vec3(cameraPos - FragPos), vec3(FragColor),
                               vec3(pl_colors[i]) / 255, 32);
         }
